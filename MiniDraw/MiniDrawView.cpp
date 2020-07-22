@@ -47,6 +47,13 @@ BOOL CMiniDrawView::PreCreateWindow(CREATESTRUCT& cs)
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
 
+	m_ClassName = AfxRegisterWndClass
+		(CS_HREDRAW | CS_VREDRAW,				// стили окна
+		0,                                      // без курсора
+		(HBRUSH)::GetStockObject(WHITE_BRUSH),	// белый фон 
+		0);                                     // без значка
+	cs.lpszClass = m_ClassName;
+
 	return CView::PreCreateWindow(cs);
 }
 
