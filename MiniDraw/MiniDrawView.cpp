@@ -30,6 +30,8 @@ END_MESSAGE_MAP()
 CMiniDrawView::CMiniDrawView() noexcept
 {
 	// TODO: add construction code here
+	m_Dragging = 0;
+	m_HCross = AfxGetApp()->LoadStandardCursor(IDC_CROSS);
 
 }
 

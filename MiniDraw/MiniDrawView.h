@@ -7,6 +7,13 @@
 
 class CMiniDrawView : public CView
 {
+protected:
+	CString m_ClassName;
+	int m_Dragging;
+	HCURSOR m_HCross; // Дескриптор указателя мыши
+	CPoint m_PointOld;
+	CPoint m_PointOrigin;
+
 protected: // create from serialization only
 	CMiniDrawView() noexcept;
 	DECLARE_DYNCREATE(CMiniDrawView)
