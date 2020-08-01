@@ -67,6 +67,12 @@ void CMiniDrawView::OnDraw(CDC* pDC)
 		return;
 
 	// TODO: add draw code for native data here
+
+	CSize ScrollSize = GetTotalSize(); // Получим размер
+	pDC->MoveTo(ScrollSize.cx, 0);
+	pDC->LineTo(ScrollSize.cx, ScrollSize.cy);	// Рисуем
+	pDC->LineTo(0, ScrollSize.cy);				// границу
+
 	int Index = pDoc->GetNumLines();
 	while (Index--)
 		pDoc->GetLine(Index)->Draw(pDC);
@@ -101,6 +107,18 @@ CMiniDrawDoc* CMiniDrawView::GetDocument() const // non-debug version is inline
 void CMiniDrawView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
+
+	CClientDC ClientDC(this);
+	OnPrepareDC(&ClientDC);
+	ClientDC.DPtoLP(&point);
+
+	// Находимся ли внутри области окна представления	
+	CSize ScrollSize = GetTotalSize();
+	CRect ScrollRect(0, 0, ScrollSize.cx, ScrollSize.cy);
+	if (!ScrollRect.PtInRect(point)) // TRUE, если внутри
+		return;
+
+	// Сохранение позиции, "захват" мыши, установка флага
 	m_PointOrigin = point; 	// Начало линии
 	m_PointOld = point; 	// Используют другие обработчики
 	SetCapture(); 			// "Захват" сообщений от мыши окном
@@ -110,6 +128,15 @@ void CMiniDrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	GetClientRect(&Rect); 	// Координаты окна представления
 	ClientToScreen(&Rect);	// Преобразуем в экранные (от верхнего левого угла)
 	::ClipCursor(&Rect);	// Огр.перемещ.курс.пределами окна
+
+	// Ограничение перемещений указателя мыши
+	ClientDC.LPtoDP(&ScrollRect);
+	CRect ViewRect; // Координаты окна представления
+	GetClientRect(&ViewRect);
+	CRect IntRect;  // Координаты пересечения области рисунка 
+	IntRect.IntersectRect(&ScrollRect, &ViewRect);
+	ClientToScreen(&IntRect); // В координаты экрана
+	::ClipCursor(&IntRect);   // Ограничить перемещение
 
 	CScrollView::OnLButtonDown(nFlags, point);
 }
@@ -122,6 +149,8 @@ void CMiniDrawView::OnMouseMove(UINT nFlags, CPoint point)
 	if (m_Dragging)
 	{
 		CClientDC ClientDC(this);
+		OnPrepareDC(&ClientDC);
+		ClientDC.DPtoLP(&point);
 		ClientDC.SetROP2(R2_NOT);
 		ClientDC.MoveTo(m_PointOrigin);
 		ClientDC.LineTo(m_PointOld); 	// Стирание линии
@@ -143,6 +172,7 @@ void CMiniDrawView::OnLButtonUp(UINT nFlags, CPoint point)
 		::ReleaseCapture(); // Отменить захват сообщений мыши
 		::ClipCursor(NULL); // Курсор двигается по всему экрану
 		CClientDC ClientDC(this);
+		OnPrepareDC(&ClientDC);
 		ClientDC.SetROP2(R2_NOT);
 		ClientDC.MoveTo(m_PointOrigin);
 		ClientDC.LineTo(m_PointOld);
@@ -153,4 +183,13 @@ void CMiniDrawView::OnLButtonUp(UINT nFlags, CPoint point)
 		PDoc->AddLine(m_PointOrigin.x, m_PointOrigin.y, point.x, point.y);	// Запомнить линию
 	}
 	CScrollView::OnLButtonUp(nFlags, point);
+}
+
+
+void CMiniDrawView::OnInitialUpdate()
+{
+	CScrollView::OnInitialUpdate();
+	// TODO: Add your specialized code here and/or call the base class
+	SIZE Size = { 640, 480 };
+	SetScrollSizes(MM_TEXT, Size);
 }
