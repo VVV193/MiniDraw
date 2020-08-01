@@ -145,6 +145,8 @@ void CMiniDrawView::OnLButtonUp(UINT nFlags, CPoint point)
 		ClientDC.SetROP2(R2_COPYPEN);
 		ClientDC.MoveTo(m_PointOrigin);
 		ClientDC.LineTo(point);
+		CMiniDrawDoc* PDoc = GetDocument();
+		PDoc->AddLine(m_PointOrigin.x, m_PointOrigin.y, point.x, point.y);	// Запомнить линию
 	}
 	CView::OnLButtonUp(nFlags, point);
 }

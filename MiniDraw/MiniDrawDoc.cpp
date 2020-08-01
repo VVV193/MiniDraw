@@ -136,3 +136,27 @@ void CMiniDrawDoc::Dump(CDumpContext& dc) const
 
 
 // CMiniDrawDoc commands
+
+void CLine::Draw(CDC *PDC)
+{
+	PDC->MoveTo(m_X1, m_Y1);
+	PDC->LineTo(m_X2, m_Y2);
+}
+
+void CMiniDrawDoc::AddLine(int X1, int Y1, int X2, int Y2)
+{
+	CLine *PLine = new CLine(X1, Y1, X2, Y2);
+	m_LineArray.Add(PLine);
+}
+
+CLine *CMiniDrawDoc::GetLine(int Index)
+{
+	if (Index < 0 || Index > m_LineArray.GetUpperBound())
+		return 0;
+	return m_LineArray.GetAt(Index);
+}
+
+int CMiniDrawDoc::GetNumLines()
+{
+	return m_LineArray.GetSize();
+}
