@@ -63,10 +63,12 @@ void CMiniDrawDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		// TODO: add storing code here
+		m_LineArray.Serialize(ar);
 	}
 	else
 	{
 		// TODO: add loading code here
+		m_LineArray.Serialize(ar);
 	}
 }
 
@@ -140,11 +142,20 @@ void CMiniDrawDoc::Dump(CDumpContext& dc) const
 
 
 // CMiniDrawDoc commands
+IMPLEMENT_SERIAL(CLine, CObject, 1) // Класс, баз.класс, версия
 
 void CLine::Draw(CDC *PDC)
 {
 	PDC->MoveTo(m_X1, m_Y1);
 	PDC->LineTo(m_X2, m_Y2);
+}
+
+void CLine::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+		ar << m_X1 << m_Y1 << m_X2 << m_Y2;
+	else
+		ar >> m_X1 >> m_Y1 >> m_X2 >> m_Y2;
 }
 
 void CMiniDrawDoc::AddLine(int X1, int Y1, int X2, int Y2)

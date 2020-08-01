@@ -8,6 +8,8 @@ class CLine : public CObject
 {
 protected:
 	int m_X1, m_Y1, m_X2, m_Y2;
+	CLine() {}
+	DECLARE_SERIAL(CLine)
 public:
 	CLine(int X1, int Y1, int X2, int Y2)
 	{
@@ -17,6 +19,8 @@ public:
 		m_Y2 = Y2;
 	}
 	void Draw(CDC *PDC);
+public:
+	virtual void Serialize(CArchive& ar);
 };
 
 class CMiniDrawDoc : public CDocument
