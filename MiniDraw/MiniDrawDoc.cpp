@@ -176,7 +176,6 @@ void CMiniDrawDoc::DeleteContents()
 	CDocument::DeleteContents();
 }
 
-
 void CMiniDrawDoc::OnEditClearAll()
 {
 	// TODO: Add your command handler code here
@@ -184,13 +183,11 @@ void CMiniDrawDoc::OnEditClearAll()
 	UpdateAllViews(0); // Удалить содержимое окна представления
 }
 
-
 void CMiniDrawDoc::OnUpdateEditClearAll(CCmdUI *pCmdUI)
 {
 	// TODO: Add your command update UI handler code here
 	pCmdUI->Enable(m_LineArray.GetSize());
 }
-
 
 void CMiniDrawDoc::OnEditUndo()
 {
@@ -203,7 +200,6 @@ void CMiniDrawDoc::OnEditUndo()
 	}
 	UpdateAllViews(0);
 }
-
 
 void CMiniDrawDoc::OnUpdateEditUndo(CCmdUI *pCmdUI)
 {
