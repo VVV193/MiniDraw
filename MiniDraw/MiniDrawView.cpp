@@ -34,8 +34,8 @@ CMiniDrawView::CMiniDrawView() noexcept
 {
 	// TODO: add construction code here
 	m_Dragging = 0;
+	m_HArrow = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
 	m_HCross = AfxGetApp()->LoadStandardCursor(IDC_CROSS);
-
 }
 
 CMiniDrawView::~CMiniDrawView()
@@ -48,7 +48,7 @@ BOOL CMiniDrawView::PreCreateWindow(CREATESTRUCT& cs)
 	//  the CREATESTRUCT cs
 
 	m_ClassName = AfxRegisterWndClass
-		(CS_HREDRAW | CS_VREDRAW,				// стили окна
+	(CS_HREDRAW | CS_VREDRAW,				// стили окна
 		0,                                      // без курсора
 		(HBRUSH)::GetStockObject(WHITE_BRUSH),	// белый фон 
 		0);                                     // без значка
@@ -145,7 +145,15 @@ void CMiniDrawView::OnLButtonDown(UINT nFlags, CPoint point)
 void CMiniDrawView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-	::SetCursor(m_HCross); // Установка типа курсора
+	CClientDC ClientDC(this);
+	OnPrepareDC(&ClientDC);
+	ClientDC.DPtoLP(&point);
+	CSize ScrollSize = GetTotalSize();
+	CRect ScrollRect(0, 0, ScrollSize.cx, ScrollSize.cy);
+	if (ScrollRect.PtInRect(point))
+		::SetCursor(m_HCross); // Установка типа курсора
+	else
+		::SetCursor(m_HArrow); // Установка типа курсора
 	if (m_Dragging)
 	{
 		CClientDC ClientDC(this);
