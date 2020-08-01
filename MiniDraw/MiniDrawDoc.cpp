@@ -158,11 +158,18 @@ void CLine::Serialize(CArchive& ar)
 		ar >> m_X1 >> m_Y1 >> m_X2 >> m_Y2;
 }
 
-void CMiniDrawDoc::AddLine(int X1, int Y1, int X2, int Y2)
+CRect CLine::GetDimRect()
+{
+	return CRect(min(m_X1, m_X2), min(m_Y1, m_Y2),
+				 max(m_X1, m_X2) + 1, max(m_Y1, m_Y2) + 1);
+}
+
+CLine *CMiniDrawDoc::AddLine(int X1, int Y1, int X2, int Y2)
 {
 	CLine *PLine = new CLine(X1, Y1, X2, Y2);
 	m_LineArray.Add(PLine);
 	SetModifiedFlag();
+	return PLine;
 }
 
 CLine *CMiniDrawDoc::GetLine(int Index)

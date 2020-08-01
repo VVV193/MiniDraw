@@ -73,10 +73,21 @@ void CMiniDrawView::OnDraw(CDC* pDC)
 	pDC->LineTo(ScrollSize.cx, ScrollSize.cy);	// Рисуем
 	pDC->LineTo(0, ScrollSize.cy);				// границу
 
+	CRect ClipRect;
+	CRect DimRect;
+	CRect IntRect;
+	CLine *PLine;
+	pDC->GetClipBox(&ClipRect); // Получить недейств. область
+
+
 	int Index = pDoc->GetNumLines();
 	while (Index--)
-		pDoc->GetLine(Index)->Draw(pDC);
-
+	{
+		PLine = pDoc->GetLine(Index);
+		DimRect = PLine->GetDimRect();
+		if (IntRect.IntersectRect(DimRect, ClipRect))
+			PLine->Draw(pDC);
+	}
 }
 
 
@@ -188,8 +199,9 @@ void CMiniDrawView::OnLButtonUp(UINT nFlags, CPoint point)
 		ClientDC.MoveTo(m_PointOrigin);
 		ClientDC.LineTo(point);
 		CMiniDrawDoc* PDoc = GetDocument();
-		PDoc->AddLine(m_PointOrigin.x, m_PointOrigin.y, point.x, point.y);	// Запомнить линию
-		PDoc->UpdateAllViews(this);
+		CLine *PCLine;
+		PCLine = PDoc->AddLine(m_PointOrigin.x, m_PointOrigin.y, point.x, point.y);	// Запомнить линию
+		PDoc->UpdateAllViews(this, 0, PCLine);
 	}
 	CScrollView::OnLButtonUp(nFlags, point);
 }
@@ -201,4 +213,21 @@ void CMiniDrawView::OnInitialUpdate()
 	// TODO: Add your specialized code here and/or call the base class
 	SIZE Size = { 640, 480 };
 	SetScrollSizes(MM_TEXT, Size);
+}
+
+
+void CMiniDrawView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if (pHint != 0)
+	{
+		CRect InvalidRect = ((CLine *)pHint)->GetDimRect();
+		CClientDC ClientDC(this);
+		OnPrepareDC(&ClientDC);// Скорректировать для текущей
+							// позиции прокрутки
+		ClientDC.LPtoDP(&InvalidRect); // Лог.коорд.->физич.
+		InvalidateRect(&InvalidRect);
+	}
+	else
+		CScrollView::OnUpdate(pSender, lHint, pHint);
 }

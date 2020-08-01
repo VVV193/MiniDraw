@@ -19,6 +19,7 @@ public:
 		m_Y2 = Y2;
 	}
 	void Draw(CDC *PDC);
+	CRect GetDimRect();
 public:
 	virtual void Serialize(CArchive& ar);
 };
@@ -28,7 +29,7 @@ class CMiniDrawDoc : public CDocument
 protected:
 	CTypedPtrArray <CObArray, CLine*> m_LineArray;
 public:
-	void AddLine(int X1, int Y1, int X2, int Y2);
+	CLine *AddLine(int X1, int Y1, int X2, int Y2);
 	CLine *GetLine(int Index);
 	int GetNumLines();
 
