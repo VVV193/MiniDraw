@@ -157,3 +157,16 @@ void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI)
 	pCmdUI->SetRadio(theApp.m_nAppLook == pCmdUI->m_nID);
 }
 
+
+
+BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
+{
+	// TODO: Add your specialized code here and/or call the base class
+
+	return m_SplitterWnd.Create
+	(this,           // родительское окно разделенного окна
+		1,              // максимальное число строк
+		2,              // максимальное число столбцов
+		CSize(15, 15), // мин. размер окна представления
+		pContext);      // информация о контексте устройства
+}

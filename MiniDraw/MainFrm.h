@@ -6,7 +6,9 @@
 
 class CMainFrame : public CFrameWnd
 {
-	
+protected:
+	CSplitterWnd m_SplitterWnd;
+
 protected: // create from serialization only
 	CMainFrame() noexcept;
 	DECLARE_DYNCREATE(CMainFrame)
@@ -39,6 +41,7 @@ protected:
 	afx_msg void OnUpdateApplicationLook(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()
 
+	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 };
 
 
