@@ -98,6 +98,8 @@ BOOL CMiniDrawApp::InitInstance()
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
 
+	EnableShellOpen();
+	RegisterShellFileTypes();
 
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
@@ -113,6 +115,8 @@ BOOL CMiniDrawApp::InitInstance()
 	// The one and only window has been initialized, so show and update it
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
+
+	m_pMainWnd->DragAcceptFiles();
 	return TRUE;
 }
 

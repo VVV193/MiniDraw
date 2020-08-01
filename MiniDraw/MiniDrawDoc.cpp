@@ -162,6 +162,7 @@ void CMiniDrawDoc::AddLine(int X1, int Y1, int X2, int Y2)
 {
 	CLine *PLine = new CLine(X1, Y1, X2, Y2);
 	m_LineArray.Add(PLine);
+	SetModifiedFlag();
 }
 
 CLine *CMiniDrawDoc::GetLine(int Index)
@@ -192,6 +193,7 @@ void CMiniDrawDoc::OnEditClearAll()
 	// TODO: Add your command handler code here
 	DeleteContents();
 	UpdateAllViews(0); // Удалить содержимое окна представления
+	SetModifiedFlag();
 }
 
 void CMiniDrawDoc::OnUpdateEditClearAll(CCmdUI *pCmdUI)
@@ -210,6 +212,7 @@ void CMiniDrawDoc::OnEditUndo()
 		m_LineArray.RemoveAt(Index);
 	}
 	UpdateAllViews(0);
+	SetModifiedFlag();
 }
 
 void CMiniDrawDoc::OnUpdateEditUndo(CCmdUI *pCmdUI)
