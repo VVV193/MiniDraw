@@ -5,7 +5,7 @@
 #pragma once
 
 
-class CMiniDrawView : public CView
+class CMiniDrawView : public CScrollView
 {
 protected:
 	CString m_ClassName;

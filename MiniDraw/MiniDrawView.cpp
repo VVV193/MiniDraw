@@ -20,9 +20,9 @@
 
 // CMiniDrawView
 
-IMPLEMENT_DYNCREATE(CMiniDrawView, CView)
+IMPLEMENT_DYNCREATE(CMiniDrawView, CScrollView)
 
-BEGIN_MESSAGE_MAP(CMiniDrawView, CView)
+BEGIN_MESSAGE_MAP(CMiniDrawView, CScrollView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONUP()
@@ -54,7 +54,7 @@ BOOL CMiniDrawView::PreCreateWindow(CREATESTRUCT& cs)
 		0);                                     // без значка
 	cs.lpszClass = m_ClassName;
 
-	return CView::PreCreateWindow(cs);
+	return CScrollView::PreCreateWindow(cs);
 }
 
 // CMiniDrawView drawing
@@ -79,12 +79,12 @@ void CMiniDrawView::OnDraw(CDC* pDC)
 #ifdef _DEBUG
 void CMiniDrawView::AssertValid() const
 {
-	CView::AssertValid();
+	CScrollView::AssertValid();
 }
 
 void CMiniDrawView::Dump(CDumpContext& dc) const
 {
-	CView::Dump(dc);
+	CScrollView::Dump(dc);
 }
 
 CMiniDrawDoc* CMiniDrawView::GetDocument() const // non-debug version is inline
@@ -111,7 +111,7 @@ void CMiniDrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	ClientToScreen(&Rect);	// Преобразуем в экранные (от верхнего левого угла)
 	::ClipCursor(&Rect);	// Огр.перемещ.курс.пределами окна
 
-	CView::OnLButtonDown(nFlags, point);
+	CScrollView::OnLButtonDown(nFlags, point);
 }
 
 
@@ -129,7 +129,7 @@ void CMiniDrawView::OnMouseMove(UINT nFlags, CPoint point)
 		ClientDC.LineTo(point); 	// Рисование новой линии
 		m_PointOld = point;
 	}
-	CView::OnMouseMove(nFlags, point);
+	CScrollView::OnMouseMove(nFlags, point);
 }
 
 
@@ -152,5 +152,5 @@ void CMiniDrawView::OnLButtonUp(UINT nFlags, CPoint point)
 		CMiniDrawDoc* PDoc = GetDocument();
 		PDoc->AddLine(m_PointOrigin.x, m_PointOrigin.y, point.x, point.y);	// Запомнить линию
 	}
-	CView::OnLButtonUp(nFlags, point);
+	CScrollView::OnLButtonUp(nFlags, point);
 }
