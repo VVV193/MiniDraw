@@ -160,3 +160,14 @@ int CMiniDrawDoc::GetNumLines()
 {
 	return m_LineArray.GetSize();
 }
+
+void CMiniDrawDoc::DeleteContents()
+{
+	// TODO: Add your specialized code here and/or call the base class
+	int Index = m_LineArray.GetSize();
+	while (Index--)
+		delete m_LineArray.GetAt(Index);
+	m_LineArray.RemoveAll();
+
+	CDocument::DeleteContents();
+}
