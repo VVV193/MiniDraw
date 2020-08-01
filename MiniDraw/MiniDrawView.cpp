@@ -59,7 +59,7 @@ BOOL CMiniDrawView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CMiniDrawView drawing
 
-void CMiniDrawView::OnDraw(CDC* /*pDC*/)
+void CMiniDrawView::OnDraw(CDC* pDC)
 {
 	CMiniDrawDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -67,6 +67,10 @@ void CMiniDrawView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: add draw code for native data here
+	int Index = pDoc->GetNumLines();
+	while (Index--)
+		pDoc->GetLine(Index)->Draw(pDC);
+
 }
 
 
