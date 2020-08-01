@@ -23,6 +23,10 @@
 IMPLEMENT_DYNCREATE(CMiniDrawDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CMiniDrawDoc, CDocument)
+	ON_COMMAND(ID_EDIT_CLEAR_ALL, &CMiniDrawDoc::OnEditClearAll)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR_ALL, &CMiniDrawDoc::OnUpdateEditClearAll)
+	ON_COMMAND(ID_EDIT_UNDO, &CMiniDrawDoc::OnEditUndo)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, &CMiniDrawDoc::OnUpdateEditUndo)
 END_MESSAGE_MAP()
 
 
@@ -170,4 +174,39 @@ void CMiniDrawDoc::DeleteContents()
 	m_LineArray.RemoveAll();
 
 	CDocument::DeleteContents();
+}
+
+
+void CMiniDrawDoc::OnEditClearAll()
+{
+	// TODO: Add your command handler code here
+	DeleteContents();
+	UpdateAllViews(0); // Удалить содержимое окна представления
+}
+
+
+void CMiniDrawDoc::OnUpdateEditClearAll(CCmdUI *pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->Enable(m_LineArray.GetSize());
+}
+
+
+void CMiniDrawDoc::OnEditUndo()
+{
+	// TODO: Add your command handler code here
+	int Index = m_LineArray.GetUpperBound();
+	if (Index > -1)
+	{
+		delete m_LineArray.GetAt(Index);
+		m_LineArray.RemoveAt(Index);
+	}
+	UpdateAllViews(0);
+}
+
+
+void CMiniDrawDoc::OnUpdateEditUndo(CCmdUI *pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->Enable(m_LineArray.GetSize());
 }

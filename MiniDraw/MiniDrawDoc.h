@@ -67,4 +67,8 @@ protected:
 #endif // SHARED_HANDLERS
 public:
 	virtual void DeleteContents();
+	afx_msg void OnEditClearAll();
+	afx_msg void OnUpdateEditClearAll(CCmdUI *pCmdUI);
+	afx_msg void OnEditUndo();
+	afx_msg void OnUpdateEditUndo(CCmdUI *pCmdUI);
 };
