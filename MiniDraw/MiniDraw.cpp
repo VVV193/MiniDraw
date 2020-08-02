@@ -66,6 +66,8 @@ CMiniDrawApp::CMiniDrawApp() noexcept
 
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
+	m_CurrentThickness = 1;
+	m_CurrentTool = ID_TOOLS_LINE;
 }
 
 // The one and only CMiniDrawApp object
