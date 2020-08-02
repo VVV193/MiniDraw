@@ -217,6 +217,7 @@
   <ItemGroup>
     <Image Include="res\MiniDraw.ico" />
     <Image Include="res\MiniDrawDoc.ico" />
+    <Image Include="res\toolbar1.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
