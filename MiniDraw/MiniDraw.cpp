@@ -24,6 +24,26 @@ BEGIN_MESSAGE_MAP(CMiniDrawApp, CWinApp)
 	// Standard file based document commands
 	ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
+	ON_COMMAND(ID_TOOLS_CIRCLE, &CMiniDrawApp::OnToolsCircle)
+	ON_UPDATE_COMMAND_UI(ID_TOOLS_CIRCLE, &CMiniDrawApp::OnUpdateToolsCircle)
+	ON_COMMAND(ID_TOOLS_CIRCLEFILL, &CMiniDrawApp::OnToolsCirclefill)
+	ON_UPDATE_COMMAND_UI(ID_TOOLS_CIRCLEFILL, &CMiniDrawApp::OnUpdateToolsCirclefill)
+	ON_COMMAND(ID_TOOLS_LINE, &CMiniDrawApp::OnToolsLine)
+	ON_UPDATE_COMMAND_UI(ID_TOOLS_LINE, &CMiniDrawApp::OnUpdateToolsLine)
+	ON_COMMAND(ID_TOOLS_RECTANGLE, &CMiniDrawApp::OnToolsRectangle)
+	ON_UPDATE_COMMAND_UI(ID_TOOLS_RECTANGLE, &CMiniDrawApp::OnUpdateToolsRectangle)
+	ON_COMMAND(ID_TOOLS_RECTFILL, &CMiniDrawApp::OnToolsRectfill)
+	ON_UPDATE_COMMAND_UI(ID_TOOLS_RECTFILL, &CMiniDrawApp::OnUpdateToolsRectfill)
+	ON_COMMAND(ID_TOOLS_RECTROUND, &CMiniDrawApp::OnToolsRectround)
+	ON_UPDATE_COMMAND_UI(ID_TOOLS_RECTROUND, &CMiniDrawApp::OnUpdateToolsRectround)
+	ON_COMMAND(ID_TOOLS_RECTROUNDFILL, &CMiniDrawApp::OnToolsRectroundfill)
+	ON_UPDATE_COMMAND_UI(ID_TOOLS_RECTROUNDFILL, &CMiniDrawApp::OnUpdateToolsRectroundfill)
+	ON_COMMAND(ID_LINE_DOUBLE, &CMiniDrawApp::OnLineDouble)
+	ON_UPDATE_COMMAND_UI(ID_LINE_DOUBLE, &CMiniDrawApp::OnUpdateLineDouble)
+	ON_COMMAND(ID_LINE_SINGLE, &CMiniDrawApp::OnLineSingle)
+	ON_UPDATE_COMMAND_UI(ID_LINE_SINGLE, &CMiniDrawApp::OnUpdateLineSingle)
+	ON_COMMAND(ID_LINE_TRIPLE, &CMiniDrawApp::OnLineTriple)
+	ON_UPDATE_COMMAND_UI(ID_LINE_TRIPLE, &CMiniDrawApp::OnUpdateLineTriple)
 END_MESSAGE_MAP()
 
 
@@ -164,5 +184,123 @@ void CMiniDrawApp::OnAppAbout()
 
 // CMiniDrawApp message handlers
 
+void CMiniDrawApp::OnLineDouble()
+{
+	// TODO: Add your command handler code here
+	m_CurrentThickness = 2;
+}
 
+void CMiniDrawApp::OnUpdateLineDouble(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_CurrentThickness == 2 ? 1 : 0);
+}
+
+void CMiniDrawApp::OnLineSingle()
+{
+	// TODO: Add your command handler code here
+	m_CurrentThickness = 1;
+}
+
+void CMiniDrawApp::OnUpdateLineSingle(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_CurrentThickness == 1 ? 1 : 0);
+}
+
+void CMiniDrawApp::OnLineTriple()
+{
+	// TODO: Add your command handler code here
+	m_CurrentThickness = 3;
+}
+
+void CMiniDrawApp::OnUpdateLineTriple(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_CurrentThickness == 3 ? 1 : 0);
+}
+
+void CMiniDrawApp::OnToolsCircle()
+{
+	// TODO: Add your command handler code here
+	m_CurrentTool = ID_TOOLS_CIRCLE;
+}
+
+void CMiniDrawApp::OnUpdateToolsCircle(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_CurrentTool == ID_TOOLS_CIRCLE ? 1 : 0);
+}
+
+void CMiniDrawApp::OnToolsCirclefill()
+{
+	// TODO: Add your command handler code here
+	m_CurrentTool = ID_TOOLS_CIRCLEFILL;
+}
+
+void CMiniDrawApp::OnUpdateToolsCirclefill(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_CurrentTool == ID_TOOLS_CIRCLEFILL ? 1 : 0);
+}
+
+void CMiniDrawApp::OnToolsLine()
+{
+	// TODO: Add your command handler code here
+	m_CurrentTool = ID_TOOLS_LINE;
+}
+
+void CMiniDrawApp::OnUpdateToolsLine(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_CurrentTool == ID_TOOLS_LINE ? 1 : 0);
+}
+
+void CMiniDrawApp::OnToolsRectangle()
+{
+	// TODO: Add your command handler code here
+	m_CurrentTool = ID_TOOLS_RECTANGLE;
+}
+
+void CMiniDrawApp::OnUpdateToolsRectangle(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_CurrentTool == ID_TOOLS_RECTANGLE ? 1 : 0);
+}
+
+void CMiniDrawApp::OnToolsRectfill()
+{
+	// TODO: Add your command handler code here
+	m_CurrentTool = ID_TOOLS_RECTFILL;
+}
+
+void CMiniDrawApp::OnUpdateToolsRectfill(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_CurrentTool == ID_TOOLS_RECTFILL ? 1 : 0);
+}
+
+void CMiniDrawApp::OnToolsRectround()
+{
+	// TODO: Add your command handler code here
+	m_CurrentTool = ID_TOOLS_RECTROUND;
+}
+
+void CMiniDrawApp::OnUpdateToolsRectround(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_CurrentTool == ID_TOOLS_RECTROUND ? 1 : 0);
+}
+
+void CMiniDrawApp::OnToolsRectroundfill()
+{
+	// TODO: Add your command handler code here
+	m_CurrentTool = ID_TOOLS_RECTROUNDFILL;
+}
+
+void CMiniDrawApp::OnUpdateToolsRectroundfill(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_CurrentTool == ID_TOOLS_RECTROUNDFILL ? 1 : 0);
+}
 
