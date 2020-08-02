@@ -53,6 +53,20 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
+	if (!m_ToolBar.CreateEx
+	(this,
+		TBSTYLE_FLAT,
+		WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER
+		| CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC))
+		return -1;
+
+	if (!m_ToolBar.LoadToolBar(IDR_MAINFRAME))
+		return -1;
+
+	m_ToolBar.EnableDocking(CBRS_ALIGN_ANY);
+	EnableDocking(CBRS_ALIGN_ANY);
+	DockControlBar(&m_ToolBar);
+
 	return 0;
 }
 

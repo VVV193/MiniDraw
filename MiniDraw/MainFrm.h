@@ -8,6 +8,7 @@ class CMainFrame : public CFrameWnd
 {
 protected:
 	CSplitterWnd m_SplitterWnd;
+	CToolBar m_ToolBar;
 
 protected: // create from serialization only
 	CMainFrame() noexcept;
