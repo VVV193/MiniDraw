@@ -20,8 +20,10 @@ public:
 	CMiniDrawApp() noexcept;
 
 public:
+	COLORREF m_CurrentColor;
 	int m_CurrentThickness;
 	UINT m_CurrentTool;
+	UINT m_IdxColorCmd;
 
 // Overrides
 public:
@@ -51,6 +53,24 @@ public:
 	afx_msg void OnUpdateLineSingle(CCmdUI *pCmdUI);
 	afx_msg void OnLineTriple();
 	afx_msg void OnUpdateLineTriple(CCmdUI *pCmdUI);
+	afx_msg void OnColorBlack();
+	afx_msg void OnUpdateColorBlack(CCmdUI *pCmdUI);
+	afx_msg void OnColorBlue();
+	afx_msg void OnUpdateColorBlue(CCmdUI *pCmdUI);
+	afx_msg void OnColorCustom();
+	afx_msg void OnUpdateColorCustom(CCmdUI *pCmdUI);
+	afx_msg void OnColorCyan();
+	afx_msg void OnUpdateColorCyan(CCmdUI *pCmdUI);
+	afx_msg void OnColorGreen();
+	afx_msg void OnUpdateColorGreen(CCmdUI *pCmdUI);
+	afx_msg void OnColorMagenta();
+	afx_msg void OnUpdateColorMagenta(CCmdUI *pCmdUI);
+	afx_msg void OnColorRed();
+	afx_msg void OnUpdateColorRed(CCmdUI *pCmdUI);
+	afx_msg void OnColorWhite();
+	afx_msg void OnUpdateColorWhite(CCmdUI *pCmdUI);
+	afx_msg void OnColorYellow();
+	afx_msg void OnUpdateColorYellow(CCmdUI *pCmdUI);
 };
 
 extern CMiniDrawApp theApp;

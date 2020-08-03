@@ -44,6 +44,24 @@ BEGIN_MESSAGE_MAP(CMiniDrawApp, CWinApp)
 	ON_UPDATE_COMMAND_UI(ID_LINE_SINGLE, &CMiniDrawApp::OnUpdateLineSingle)
 	ON_COMMAND(ID_LINE_TRIPLE, &CMiniDrawApp::OnLineTriple)
 	ON_UPDATE_COMMAND_UI(ID_LINE_TRIPLE, &CMiniDrawApp::OnUpdateLineTriple)
+	ON_COMMAND(ID_COLOR_BLACK, &CMiniDrawApp::OnColorBlack)
+	ON_UPDATE_COMMAND_UI(ID_COLOR_BLACK, &CMiniDrawApp::OnUpdateColorBlack)
+	ON_COMMAND(ID_COLOR_BLUE, &CMiniDrawApp::OnColorBlue)
+	ON_UPDATE_COMMAND_UI(ID_COLOR_BLUE, &CMiniDrawApp::OnUpdateColorBlue)
+	ON_COMMAND(ID_COLOR_CUSTOM, &CMiniDrawApp::OnColorCustom)
+	ON_UPDATE_COMMAND_UI(ID_COLOR_CUSTOM, &CMiniDrawApp::OnUpdateColorCustom)
+	ON_COMMAND(ID_COLOR_CYAN, &CMiniDrawApp::OnColorCyan)
+	ON_UPDATE_COMMAND_UI(ID_COLOR_CYAN, &CMiniDrawApp::OnUpdateColorCyan)
+	ON_COMMAND(ID_COLOR_GREEN, &CMiniDrawApp::OnColorGreen)
+	ON_UPDATE_COMMAND_UI(ID_COLOR_GREEN, &CMiniDrawApp::OnUpdateColorGreen)
+	ON_COMMAND(ID_COLOR_MAGENTA, &CMiniDrawApp::OnColorMagenta)
+	ON_UPDATE_COMMAND_UI(ID_COLOR_MAGENTA, &CMiniDrawApp::OnUpdateColorMagenta)
+	ON_COMMAND(ID_COLOR_RED, &CMiniDrawApp::OnColorRed)
+	ON_UPDATE_COMMAND_UI(ID_COLOR_RED, &CMiniDrawApp::OnUpdateColorRed)
+	ON_COMMAND(ID_COLOR_WHITE, &CMiniDrawApp::OnColorWhite)
+	ON_UPDATE_COMMAND_UI(ID_COLOR_WHITE, &CMiniDrawApp::OnUpdateColorWhite)
+	ON_COMMAND(ID_COLOR_YELLOW, &CMiniDrawApp::OnColorYellow)
+	ON_UPDATE_COMMAND_UI(ID_COLOR_YELLOW, &CMiniDrawApp::OnUpdateColorYellow)
 END_MESSAGE_MAP()
 
 
@@ -306,3 +324,129 @@ void CMiniDrawApp::OnUpdateToolsRectroundfill(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck(m_CurrentTool == ID_TOOLS_RECTROUNDFILL ? 1 : 0);
 }
 
+
+void CMiniDrawApp::OnColorBlack()
+{
+	// TODO: Add your command handler code here
+	m_CurrentColor = RGB(0, 0, 0);
+	m_IdxColorCmd = ID_COLOR_BLACK;
+}
+
+
+void CMiniDrawApp::OnUpdateColorBlack(CCmdUI *pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_IdxColorCmd == ID_COLOR_BLACK ? 1 : 0);
+}
+
+
+void CMiniDrawApp::OnColorBlue()
+{
+	// TODO: Add your command handler code here
+	m_CurrentColor = RGB(0, 0, 255);
+	m_IdxColorCmd = ID_COLOR_BLUE;
+}
+
+void CMiniDrawApp::OnUpdateColorBlue(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_IdxColorCmd == ID_COLOR_BLUE ? 1 : 0);
+}
+
+
+void CMiniDrawApp::OnColorCustom()
+{
+	// TODO: Add your command handler code here
+	CColorDialog ColorDialog; // Диалог выбора цвета (станд.)
+	if (ColorDialog.DoModal() == IDOK)
+	{
+		m_CurrentColor = ColorDialog.GetColor();
+		m_IdxColorCmd = ID_COLOR_CUSTOM;
+	}
+}
+
+
+void CMiniDrawApp::OnUpdateColorCustom(CCmdUI *pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_IdxColorCmd == ID_COLOR_CUSTOM ? 1 : 0);
+}
+
+
+void CMiniDrawApp::OnColorCyan()
+{
+	// TODO: Add your command handler code here
+	m_CurrentColor = RGB(0, 255, 255);
+	m_IdxColorCmd = ID_COLOR_CYAN;
+}
+
+void CMiniDrawApp::OnUpdateColorCyan(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_IdxColorCmd == ID_COLOR_CYAN ? 1 : 0);
+}
+
+void CMiniDrawApp::OnColorGreen()
+{
+	// TODO: Add your command handler code here
+	m_CurrentColor = RGB(0, 255, 0);
+	m_IdxColorCmd = ID_COLOR_GREEN;
+}
+
+void CMiniDrawApp::OnUpdateColorGreen(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_IdxColorCmd == ID_COLOR_GREEN ? 1 : 0);
+}
+
+void CMiniDrawApp::OnColorMagenta()
+{
+	// TODO: Add your command handler code here
+	m_CurrentColor = RGB(255, 0, 255);
+	m_IdxColorCmd = ID_COLOR_MAGENTA;
+}
+
+void CMiniDrawApp::OnUpdateColorMagenta(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_IdxColorCmd == ID_COLOR_MAGENTA ? 1 : 0);
+}
+
+void CMiniDrawApp::OnColorRed()
+{
+	// TODO: Add your command handler code here
+	m_CurrentColor = RGB(255, 0, 0);
+	m_IdxColorCmd = ID_COLOR_RED;
+}
+
+void CMiniDrawApp::OnUpdateColorRed(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_IdxColorCmd == ID_COLOR_RED ? 1 : 0);
+}
+
+void CMiniDrawApp::OnColorWhite()
+{
+	// TODO: Add your command handler code here
+	m_CurrentColor = RGB(255, 255, 255);
+	m_IdxColorCmd = ID_COLOR_WHITE;
+}
+
+void CMiniDrawApp::OnUpdateColorWhite(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_IdxColorCmd == ID_COLOR_WHITE ? 1 : 0);
+}
+
+void CMiniDrawApp::OnColorYellow()
+{
+	// TODO: Add your command handler code here
+	m_CurrentColor = RGB(255, 255, 0);
+	m_IdxColorCmd = ID_COLOR_YELLOW;
+}
+
+void CMiniDrawApp::OnUpdateColorYellow(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_IdxColorCmd == ID_COLOR_YELLOW ? 1 : 0);
+}

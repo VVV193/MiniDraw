@@ -28,13 +28,24 @@
 #define ID_LINE_SINGLE                  32778
 #define ID_LINE_DOUBLE                  32779
 #define ID_LINE_TRIPLE                  32780
+#define ID_OPTIONS_COLOR                32781
+#define ID_OPTIONS_LINETHICKNESS        32782
+#define ID_COLOR_BLACK                  32783
+#define ID_COLOR_WHITE                  32784
+#define ID_COLOR_RED                    32785
+#define ID_COLOR_GREEN                  32786
+#define ID_COLOR_BLUE                   32787
+#define ID_COLOR_YELLOW                 32788
+#define ID_COLOR_CYAN                   32789
+#define ID_COLOR_MAGENTA                32790
+#define ID_COLOR_CUSTOM                 32791
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32781
+#define _APS_NEXT_COMMAND_VALUE         32792
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
