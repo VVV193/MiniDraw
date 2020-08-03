@@ -12,6 +12,7 @@ protected:
 	int m_Dragging;
 	HCURSOR m_HArrow;
 	HCURSOR m_HCross; // Дескриптор указателя мыши
+	CPen m_PenDotted;
 	CPoint m_PointOld;
 	CPoint m_PointOrigin;
 

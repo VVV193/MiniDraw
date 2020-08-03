@@ -63,12 +63,12 @@ void CMiniDrawDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		// TODO: add storing code here
-		m_LineArray.Serialize(ar);
+		m_FigArray.Serialize(ar);
 	}
 	else
 	{
 		// TODO: add loading code here
-		m_LineArray.Serialize(ar);
+		m_FigArray.Serialize(ar);
 	}
 }
 
@@ -140,60 +140,303 @@ void CMiniDrawDoc::Dump(CDumpContext& dc) const
 }
 #endif //_DEBUG
 
+// implementation of figure classes: 
 
-// CMiniDrawDoc commands
-IMPLEMENT_SERIAL(CLine, CObject, 1) // Класс, баз.класс, версия
+IMPLEMENT_SERIAL(CFigure, CObject, 2)
 
-void CLine::Draw(CDC *PDC)
+CRect CFigure::GetDimRect()
 {
-	PDC->MoveTo(m_X1, m_Y1);
-	PDC->LineTo(m_X2, m_Y2);
+	return CRect
+	(min(m_X1, m_X2),
+		min(m_Y1, m_Y2),
+		max(m_X1, m_X2) + 1,
+		max(m_Y1, m_Y2) + 1);
+}
+
+void CFigure::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+		ar << m_X1 << m_Y1 << m_X2 << m_Y2 << m_Color;
+	else
+		ar >> m_X1 >> m_Y1 >> m_X2 >> m_Y2 >> m_Color;
+}
+
+IMPLEMENT_SERIAL(CLine, CFigure, 2)
+
+CLine::CLine(int X1, int Y1, int X2, int Y2, COLORREF Color, int Thickness)
+{
+	m_X1 = X1;
+	m_Y1 = Y1;
+	m_X2 = X2;
+	m_Y2 = Y2;
+	m_Color = Color;
+	m_Thickness = Thickness;
 }
 
 void CLine::Serialize(CArchive& ar)
 {
+	CFigure::Serialize(ar);
 	if (ar.IsStoring())
-		ar << m_X1 << m_Y1 << m_X2 << m_Y2;
+		ar << m_Thickness;
 	else
-		ar >> m_X1 >> m_Y1 >> m_X2 >> m_Y2;
+		ar >> m_Thickness;
 }
 
-CRect CLine::GetDimRect()
+void CLine::Draw(CDC *PDC)
 {
-	return CRect(min(m_X1, m_X2), min(m_Y1, m_Y2),
-				 max(m_X1, m_X2) + 1, max(m_Y1, m_Y2) + 1);
+	CPen Pen, *POldPen;
+
+	// select pen/brush:
+	Pen.CreatePen(PS_SOLID, m_Thickness, m_Color);
+	POldPen = PDC->SelectObject(&Pen);
+
+	// draw figure:
+	PDC->MoveTo(m_X1, m_Y1);
+	PDC->LineTo(m_X2, m_Y2);
+
+	// remove pen/brush: 
+	PDC->SelectObject(POldPen);
 }
 
-CLine *CMiniDrawDoc::AddLine(int X1, int Y1, int X2, int Y2)
+IMPLEMENT_SERIAL(CRectangle, CFigure, 2)
+
+CRectangle::CRectangle(int X1, int Y1, int X2, int Y2,
+	COLORREF Color, int Thickness)
 {
-	CLine *PLine = new CLine(X1, Y1, X2, Y2);
-	m_LineArray.Add(PLine);
+	m_X1 = X1;
+	m_Y1 = Y1;
+	m_X2 = X2;
+	m_Y2 = Y2;
+	m_Color = Color;
+	m_Thickness = Thickness;
+}
+
+void CRectangle::Serialize(CArchive& ar)
+{
+	CFigure::Serialize(ar);
+	if (ar.IsStoring())
+		ar << m_Thickness;
+	else
+		ar >> m_Thickness;
+}
+
+void CRectangle::Draw(CDC *PDC)
+{
+	CPen Pen, *POldPen;
+
+	// select pen/brush:
+	Pen.CreatePen(PS_INSIDEFRAME, m_Thickness, m_Color);
+	POldPen = PDC->SelectObject(&Pen);
+	PDC->SelectStockObject(NULL_BRUSH);
+
+	// draw figure:
+	PDC->Rectangle(m_X1, m_Y1, m_X2, m_Y2);
+
+	// remove pen/brush:  
+	PDC->SelectObject(POldPen);
+}
+
+IMPLEMENT_SERIAL(CRectFill, CFigure, 2)
+
+CRectFill::CRectFill(int X1, int Y1, int X2, int Y2, COLORREF Color)
+{
+	m_X1 = min(X1, X2);
+	m_Y1 = min(Y1, Y2);
+	m_X2 = max(X1, X2);
+	m_Y2 = max(Y1, Y2);
+	m_Color = Color;
+}
+
+void CRectFill::Draw(CDC *PDC)
+{
+	CBrush Brush, *POldBrush;
+	CPen Pen, *POldPen;
+
+	// select pen/brush:
+	Pen.CreatePen(PS_INSIDEFRAME, 1, m_Color);
+	POldPen = PDC->SelectObject(&Pen);
+	Brush.CreateSolidBrush(m_Color);
+	POldBrush = PDC->SelectObject(&Brush);
+
+	// draw figure:
+	PDC->Rectangle(m_X1, m_Y1, m_X2, m_Y2);
+
+	// remove pen/brush:  
+	PDC->SelectObject(POldPen);
+	PDC->SelectObject(POldBrush);
+}
+
+IMPLEMENT_SERIAL(CRectRound, CFigure, 2)
+
+CRectRound::CRectRound(int X1, int Y1, int X2, int Y2,
+	COLORREF Color, int Thickness)
+{
+	m_X1 = min(X1, X2);
+	m_Y1 = min(Y1, Y2);
+	m_X2 = max(X1, X2);
+	m_Y2 = max(Y1, Y2);
+	m_Color = Color;
+	m_Thickness = Thickness;
+}
+
+void CRectRound::Serialize(CArchive& ar)
+{
+	CFigure::Serialize(ar);
+	if (ar.IsStoring())
+		ar << m_Thickness;
+	else
+		ar >> m_Thickness;
+}
+
+void CRectRound::Draw(CDC *PDC)
+{
+	CPen Pen, *POldPen;
+
+	// select pen/brush:
+	Pen.CreatePen(PS_INSIDEFRAME, m_Thickness, m_Color);
+	POldPen = PDC->SelectObject(&Pen);
+	PDC->SelectStockObject(NULL_BRUSH);
+
+	// draw figure:
+	int SizeRound = (m_X2 - m_X1 + m_Y2 - m_Y1) / 6;
+	PDC->RoundRect(m_X1, m_Y1, m_X2, m_Y2, SizeRound, SizeRound);
+
+	// remove pen/brush:  
+	PDC->SelectObject(POldPen);
+}
+
+IMPLEMENT_SERIAL(CRectRoundFill, CFigure, 2)
+
+CRectRoundFill::CRectRoundFill(int X1, int Y1, int X2, int Y2, COLORREF Color)
+{
+	m_X1 = min(X1, X2);
+	m_Y1 = min(Y1, Y2);
+	m_X2 = max(X1, X2);
+	m_Y2 = max(Y1, Y2);
+	m_Color = Color;
+}
+
+void CRectRoundFill::Draw(CDC *PDC)
+{
+	CBrush Brush, *POldBrush;
+	CPen Pen, *POldPen;
+
+	// select pen/brush:
+	Pen.CreatePen(PS_INSIDEFRAME, 1, m_Color);
+	POldPen = PDC->SelectObject(&Pen);
+	Brush.CreateSolidBrush(m_Color);
+	POldBrush = PDC->SelectObject(&Brush);
+
+	// draw figure:
+	int SizeRound = (m_X2 - m_X1 + m_Y2 - m_Y1) / 6;
+	PDC->RoundRect(m_X1, m_Y1, m_X2, m_Y2, SizeRound, SizeRound);
+
+	// remove pen/brush:  
+	PDC->SelectObject(POldPen);
+	PDC->SelectObject(POldBrush);
+}
+
+IMPLEMENT_SERIAL(CCircle, CFigure, 2)
+
+CCircle::CCircle(int X1, int Y1, int X2, int Y2,
+	COLORREF Color, int Thickness)
+{
+	m_X1 = min(X1, X2);
+	m_Y1 = min(Y1, Y2);
+	m_X2 = max(X1, X2);
+	m_Y2 = max(Y1, Y2);
+	m_Color = Color;
+	m_Thickness = Thickness;
+}
+
+void CCircle::Serialize(CArchive& ar)
+{
+	CFigure::Serialize(ar);
+	if (ar.IsStoring())
+		ar << m_Thickness;
+	else
+		ar >> m_Thickness;
+}
+
+void CCircle::Draw(CDC *PDC)
+{
+	CPen Pen, *POldPen;
+
+	// select pen/brush:
+	Pen.CreatePen(PS_INSIDEFRAME, m_Thickness, m_Color);
+	POldPen = PDC->SelectObject(&Pen);
+	PDC->SelectStockObject(NULL_BRUSH);
+
+	// draw figure:
+	PDC->Ellipse(m_X1, m_Y1, m_X2, m_Y2);
+
+	// remove pen/brush:  
+	PDC->SelectObject(POldPen);
+}
+
+IMPLEMENT_SERIAL(CCircleFill, CFigure, 2)
+
+CCircleFill::CCircleFill(int X1, int Y1, int X2, int Y2, COLORREF Color)
+{
+	m_X1 = min(X1, X2);
+	m_Y1 = min(Y1, Y2);
+	m_X2 = max(X1, X2);
+	m_Y2 = max(Y1, Y2);
+	m_Color = Color;
+}
+
+void CCircleFill::Draw(CDC *PDC)
+{
+	CBrush Brush, *POldBrush;
+	CPen Pen, *POldPen;
+
+	// select pen/brush:
+	Pen.CreatePen(PS_INSIDEFRAME, 1, m_Color);
+	POldPen = PDC->SelectObject(&Pen);
+	Brush.CreateSolidBrush(m_Color);
+	POldBrush = PDC->SelectObject(&Brush);
+
+	// draw figure:
+	PDC->Ellipse(m_X1, m_Y1, m_X2, m_Y2);
+
+	// remove pen/brush:  
+	PDC->SelectObject(POldPen);
+	PDC->SelectObject(POldBrush);
+}
+void CMiniDrawDoc::AddFigure(CFigure *PFigure)
+{
+	m_FigArray.Add(PFigure);
 	SetModifiedFlag();
-	return PLine;
 }
 
-CLine *CMiniDrawDoc::GetLine(int Index)
+CFigure *CMiniDrawDoc::GetFigure(int Index)
 {
-	if (Index < 0 || Index > m_LineArray.GetUpperBound())
+	if (Index < 0 || Index > m_FigArray.GetUpperBound())
 		return 0;
-	return m_LineArray.GetAt(Index);
+	return (CFigure *)m_FigArray.GetAt(Index);
 }
 
-int CMiniDrawDoc::GetNumLines()
+int CMiniDrawDoc::GetNumFigs()
 {
-	return m_LineArray.GetSize();
+	return m_FigArray.GetSize();
 }
+
+// CMiniDrawDoc commands
 
 void CMiniDrawDoc::DeleteContents()
 {
 	// TODO: Add your specialized code here and/or call the base class
-	int Index = m_LineArray.GetSize();
+
+	int Index = m_FigArray.GetSize();
 	while (Index--)
-		delete m_LineArray.GetAt(Index);
-	m_LineArray.RemoveAll();
+		delete m_FigArray.GetAt(Index);
+	m_FigArray.RemoveAll();
+
+	CDocument::DeleteContents();
 
 	CDocument::DeleteContents();
 }
+
 
 void CMiniDrawDoc::OnEditClearAll()
 {
@@ -203,20 +446,22 @@ void CMiniDrawDoc::OnEditClearAll()
 	SetModifiedFlag();
 }
 
+
 void CMiniDrawDoc::OnUpdateEditClearAll(CCmdUI *pCmdUI)
 {
 	// TODO: Add your command update UI handler code here
-	pCmdUI->Enable(m_LineArray.GetSize());
+	pCmdUI->Enable(m_FigArray.GetSize());
 }
+
 
 void CMiniDrawDoc::OnEditUndo()
 {
 	// TODO: Add your command handler code here
-	int Index = m_LineArray.GetUpperBound();
+	int Index = m_FigArray.GetUpperBound();
 	if (Index > -1)
 	{
-		delete m_LineArray.GetAt(Index);
-		m_LineArray.RemoveAt(Index);
+		delete m_FigArray.GetAt(Index);
+		m_FigArray.RemoveAt(Index);
 	}
 	UpdateAllViews(0);
 	SetModifiedFlag();
@@ -225,5 +470,5 @@ void CMiniDrawDoc::OnEditUndo()
 void CMiniDrawDoc::OnUpdateEditUndo(CCmdUI *pCmdUI)
 {
 	// TODO: Add your command update UI handler code here
-	pCmdUI->Enable(m_LineArray.GetSize());
+	pCmdUI->Enable(m_FigArray.GetSize());
 }

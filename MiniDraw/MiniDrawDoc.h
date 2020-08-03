@@ -4,34 +4,118 @@
 
 
 #pragma once
-class CLine : public CObject
+class CFigure : public CObject
 {
 protected:
-	int m_X1, m_Y1, m_X2, m_Y2;
+	COLORREF m_Color;
+	DWORD m_X1, m_Y1, m_X2, m_Y2;
+
+	CFigure() {}
+	DECLARE_SERIAL(CFigure)
+
+public:
+	virtual void Draw(CDC *PDC) {}
+	CRect GetDimRect();
+	virtual void Serialize(CArchive& ar);
+};
+
+class CLine : public CFigure
+{
+protected:
+	DWORD m_Thickness;
 	CLine() {}
 	DECLARE_SERIAL(CLine)
+
 public:
-	CLine(int X1, int Y1, int X2, int Y2)
-	{
-		m_X1 = X1;
-		m_Y1 = Y1;
-		m_X2 = X2;
-		m_Y2 = Y2;
-	}
-	void Draw(CDC *PDC);
-	CRect GetDimRect();
-public:
+	CLine(int X1, int Y1, int X2, int Y2, COLORREF Color, int Thickness);
+	virtual void Draw(CDC *PDC);
 	virtual void Serialize(CArchive& ar);
+};
+
+class CRectangle : public CFigure
+{
+protected:
+	DWORD m_Thickness;
+
+	CRectangle() {}
+	DECLARE_SERIAL(CRectangle)
+
+public:
+	CRectangle(int X1, int Y1, int X2, int Y2, COLORREF Color, int Thickness);
+	virtual void Draw(CDC *PDC);
+	virtual void Serialize(CArchive& ar);
+};
+
+class CRectFill : public CFigure
+{
+protected:
+	CRectFill() {}
+	DECLARE_SERIAL(CRectFill)
+
+public:
+	CRectFill(int X1, int Y1, int X2, int Y2, COLORREF Color);
+	virtual void Draw(CDC *PDC);
+};
+
+class CRectRound : public CFigure
+{
+protected:
+	DWORD m_Thickness;
+
+	CRectRound() {}
+	DECLARE_SERIAL(CRectRound)
+
+public:
+	CRectRound(int X1, int Y1, int X2, int Y2, COLORREF Color, int Thickness);
+	virtual void Draw(CDC *PDC);
+	virtual void Serialize(CArchive& ar);
+};
+
+class CRectRoundFill : public CFigure
+{
+protected:
+	CRectRoundFill() {}
+	DECLARE_SERIAL(CRectRoundFill)
+
+public:
+	CRectRoundFill(int X1, int Y1, int X2, int Y2, COLORREF Color);
+	virtual void Draw(CDC *PDC);
+};
+
+class CCircle : public CFigure
+{
+protected:
+	DWORD m_Thickness;
+
+	CCircle() {}
+	DECLARE_SERIAL(CCircle)
+
+public:
+	CCircle(int X1, int Y1, int X2, int Y2, COLORREF Color, int Thickness);
+	virtual void Draw(CDC *PDC);
+	virtual void Serialize(CArchive& ar);
+};
+
+class CCircleFill : public CFigure
+{
+protected:
+	CCircleFill() {}
+	DECLARE_SERIAL(CCircleFill)
+
+public:
+	CCircleFill(int X1, int Y1, int X2, int Y2, COLORREF Color);
+	virtual void Draw(CDC *PDC);
 };
 
 class CMiniDrawDoc : public CDocument
 {
 protected:
-	CTypedPtrArray <CObArray, CLine*> m_LineArray;
+	CTypedPtrArray<CObArray, CFigure*> m_FigArray;
+
 public:
-	CLine *AddLine(int X1, int Y1, int X2, int Y2);
-	CLine *GetLine(int Index);
-	int GetNumLines();
+	void AddFigure(CFigure *PFigure);
+	CFigure *GetFigure(int Index);
+	int GetNumFigs();
 
 protected: // create from serialization only
 	CMiniDrawDoc() noexcept;
