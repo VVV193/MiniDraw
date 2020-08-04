@@ -14,6 +14,8 @@ protected:
 	int m_Dragging;
 	HCURSOR m_HArrow;
 	HCURSOR m_HCross; // Дескриптор указателя мыши
+	int m_NumCols, m_NumRows;
+	int m_PageHeight, m_PageWidth;
 	CPen m_PenDotted;
 	CPoint m_PointOld;
 	CPoint m_PointOrigin;
@@ -55,6 +57,8 @@ public:
 	virtual void OnInitialUpdate();
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
+	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual void OnPrepareDC(CDC* pDC, CPrintInfo* pInfo = NULL);
 };
 
 #ifndef _DEBUG  // debug version in MiniDrawView.cpp

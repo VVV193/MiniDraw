@@ -70,10 +70,13 @@ void CMiniDrawView::OnDraw(CDC* pDC)
 		return;
 
 	// TODO: add draw code for native data here
-	CSize ScrollSize = GetTotalSize(); // Получим размер
-	pDC->MoveTo(ScrollSize.cx, 0);
-	pDC->LineTo(ScrollSize.cx, ScrollSize.cy); // Рисуем
-	pDC->LineTo(0, ScrollSize.cy);	 // границу
+	if (pDC->GetDeviceCaps(TECHNOLOGY) == DT_RASDISPLAY)
+	{
+		CSize ScrollSize = GetTotalSize(); // Получим размер
+		pDC->MoveTo(ScrollSize.cx, 0);
+		pDC->LineTo(ScrollSize.cx, ScrollSize.cy); // Рисуем
+		pDC->LineTo(0, ScrollSize.cy);	 // границу
+	}
 	CRect ClipRect;
 	CRect DimRect;
 	CRect IntRect;
@@ -373,4 +376,34 @@ BOOL CMiniDrawView::OnPreparePrinting(CPrintInfo* pInfo)
 
 	// УДАЛЕНО: return CScrollView::OnPreparePrinting(pInfo);
 	return DoPreparePrinting(pInfo);
+}
+
+
+void CMiniDrawView::OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo)
+{
+	// TODO: Add your specialized code here and/or call the base class
+
+	// Получить размеры доступной для печати области страницы
+	m_PageHeight = pDC->GetDeviceCaps(VERTRES);// в пикселях
+	m_PageWidth = pDC->GetDeviceCaps(HORZRES); // в пикселях
+	m_NumRows = DRAWHEIGHT / m_PageHeight + (DRAWHEIGHT % m_PageHeight > 0);
+	m_NumCols = DRAWWIDTH / m_PageWidth + (DRAWWIDTH % m_PageWidth > 0);
+	pInfo->SetMinPage(1);
+	pInfo->SetMaxPage(m_NumRows * m_NumCols);
+
+	CScrollView::OnBeginPrinting(pDC, pInfo);
+}
+
+
+void CMiniDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
+{
+	// TODO: Add your specialized code here and/or call the base class
+
+	CScrollView::OnPrepareDC(pDC, pInfo);
+
+	if (pInfo == NULL)
+		return;
+	int CurRow = pInfo->m_nCurPage / m_NumCols + (pInfo->m_nCurPage % m_NumCols > 0);
+	int CurCol = (pInfo->m_nCurPage - 1) % m_NumCols + 1;
+	pDC->SetViewportOrg(-m_PageWidth * (CurCol - 1), -m_PageHeight * (CurRow - 1));
 }
