@@ -344,7 +344,7 @@ void CMiniDrawView::OnInitialUpdate()
 {
 	CScrollView::OnInitialUpdate();
 	// TODO: Add your specialized code here and/or call the base class
-	SIZE Size = { 640, 480 };
+	SIZE Size = { DRAWWIDTH, DRAWHEIGHT };
 	SetScrollSizes(MM_TEXT, Size);
 }
 

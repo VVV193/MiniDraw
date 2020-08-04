@@ -142,7 +142,7 @@ void CMiniDrawDoc::Dump(CDumpContext& dc) const
 
 // implementation of figure classes: 
 
-IMPLEMENT_SERIAL(CFigure, CObject, 2)
+IMPLEMENT_SERIAL(CFigure, CObject, 3)
 
 CRect CFigure::GetDimRect()
 {
@@ -161,7 +161,7 @@ void CFigure::Serialize(CArchive& ar)
 		ar >> m_X1 >> m_Y1 >> m_X2 >> m_Y2 >> m_Color;
 }
 
-IMPLEMENT_SERIAL(CLine, CFigure, 2)
+IMPLEMENT_SERIAL(CLine, CFigure, 3)
 
 CLine::CLine(int X1, int Y1, int X2, int Y2, COLORREF Color, int Thickness)
 {
@@ -198,7 +198,7 @@ void CLine::Draw(CDC *PDC)
 	PDC->SelectObject(POldPen);
 }
 
-IMPLEMENT_SERIAL(CRectangle, CFigure, 2)
+IMPLEMENT_SERIAL(CRectangle, CFigure, 3)
 
 CRectangle::CRectangle(int X1, int Y1, int X2, int Y2,
 	COLORREF Color, int Thickness)
@@ -236,7 +236,7 @@ void CRectangle::Draw(CDC *PDC)
 	PDC->SelectObject(POldPen);
 }
 
-IMPLEMENT_SERIAL(CRectFill, CFigure, 2)
+IMPLEMENT_SERIAL(CRectFill, CFigure, 3)
 
 CRectFill::CRectFill(int X1, int Y1, int X2, int Y2, COLORREF Color)
 {
@@ -266,7 +266,7 @@ void CRectFill::Draw(CDC *PDC)
 	PDC->SelectObject(POldBrush);
 }
 
-IMPLEMENT_SERIAL(CRectRound, CFigure, 2)
+IMPLEMENT_SERIAL(CRectRound, CFigure, 3)
 
 CRectRound::CRectRound(int X1, int Y1, int X2, int Y2,
 	COLORREF Color, int Thickness)
@@ -305,7 +305,7 @@ void CRectRound::Draw(CDC *PDC)
 	PDC->SelectObject(POldPen);
 }
 
-IMPLEMENT_SERIAL(CRectRoundFill, CFigure, 2)
+IMPLEMENT_SERIAL(CRectRoundFill, CFigure, 3)
 
 CRectRoundFill::CRectRoundFill(int X1, int Y1, int X2, int Y2, COLORREF Color)
 {
@@ -336,7 +336,7 @@ void CRectRoundFill::Draw(CDC *PDC)
 	PDC->SelectObject(POldBrush);
 }
 
-IMPLEMENT_SERIAL(CCircle, CFigure, 2)
+IMPLEMENT_SERIAL(CCircle, CFigure, 3)
 
 CCircle::CCircle(int X1, int Y1, int X2, int Y2,
 	COLORREF Color, int Thickness)
@@ -374,7 +374,7 @@ void CCircle::Draw(CDC *PDC)
 	PDC->SelectObject(POldPen);
 }
 
-IMPLEMENT_SERIAL(CCircleFill, CFigure, 2)
+IMPLEMENT_SERIAL(CCircleFill, CFigure, 3)
 
 CCircleFill::CCircleFill(int X1, int Y1, int X2, int Y2, COLORREF Color)
 {

@@ -4,6 +4,8 @@
 
 #pragma once
 
+const int DRAWWIDTH = 4000;  // ширина рисунка
+const int DRAWHEIGHT = 6000;  // высота рисунка
 
 class CMiniDrawView : public CScrollView
 {
