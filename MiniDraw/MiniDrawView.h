@@ -52,6 +52,7 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	virtual void OnInitialUpdate();
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
+	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 };
 
 #ifndef _DEBUG  // debug version in MiniDrawView.cpp

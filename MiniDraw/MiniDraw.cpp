@@ -62,6 +62,7 @@ BEGIN_MESSAGE_MAP(CMiniDrawApp, CWinApp)
 	ON_UPDATE_COMMAND_UI(ID_COLOR_WHITE, &CMiniDrawApp::OnUpdateColorWhite)
 	ON_COMMAND(ID_COLOR_YELLOW, &CMiniDrawApp::OnColorYellow)
 	ON_UPDATE_COMMAND_UI(ID_COLOR_YELLOW, &CMiniDrawApp::OnUpdateColorYellow)
+	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
 
@@ -170,7 +171,7 @@ class CAboutDlg : public CDialogEx
 public:
 	CAboutDlg() noexcept;
 
-// Dialog Data
+	// Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ABOUTBOX };
 #endif

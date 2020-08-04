@@ -26,6 +26,8 @@ BEGIN_MESSAGE_MAP(CMiniDrawView, CScrollView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONUP()
+	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
 END_MESSAGE_MAP()
 
 // CMiniDrawView construction/destruction
@@ -361,4 +363,14 @@ void CMiniDrawView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 	}
 	else
 		CScrollView::OnUpdate(pSender, lHint, pHint);
+}
+
+
+BOOL CMiniDrawView::OnPreparePrinting(CPrintInfo* pInfo)
+{
+
+	// TODO:  call DoPreparePrinting to invoke the Print dialog box
+
+	// сдюкемн: return CScrollView::OnPreparePrinting(pInfo);
+	return DoPreparePrinting(pInfo);
 }
